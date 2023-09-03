@@ -24,6 +24,7 @@ window.onload = init;
 function init() {
   btn_generation.addEventListener('click', main);
   btn_copy.addEventListener('click', copy);
+  step0();
 }
 
 const main = () => {
@@ -190,11 +191,66 @@ const generatePassword = (
   }
 
   field_password.textContent = password;
-  checkSrength(password);
+  checkStrength(password);
 };
 
-const checkSrength = (password) => {
+const checkStrength = (password) => {
   console.log(password);
+
+  const totalCharacterValue =
+    hasLowerCase(password) +
+    hasUpperCase(password) +
+    hasNumbers(password) +
+    hasScpecialC(password);
+
+  console.log(totalCharacterValue);
+  console.log(password.length);
+  const passwordStrength = totalCharacterValue ** password.length;
+  console.log(passwordStrength);
+  if (passwordStrength <= 8503056) {
+    console.log('step 1');
+    step1();
+  } else if (passwordStrength > 8503056 && passwordStrength <= 62523502209) {
+    console.log('step 2');
+    step2();
+  } else if (
+    passwordStrength > 62523502209 &&
+    passwordStrength <= 1235736291547681
+  ) {
+    console.log('step 3');
+    step3();
+  } else if (
+    passwordStrength > 1235736291547681 &&
+    BigInt(passwordStrength) < BigInt(7326680472586201000n)
+  ) {
+    console.log('step 4');
+    step4();
+  } else if (passwordStrength > 7326680472586201000n) {
+    step5();
+    console.log('step 5');
+  }
+};
+
+const hasLowerCase = (password) => {
+  const lowercaseRegex = /[a-z]+/g;
+  const result = lowercaseRegex.test(password) ? 26 : 0;
+  return result;
+};
+
+const hasUpperCase = (password) => {
+  const uppercaseRegex = /[A-Z]+/g;
+  const result = uppercaseRegex.test(password) ? 26 : 0;
+  return result;
+};
+const hasNumbers = (password) => {
+  const numbersRegex = /[0-9]+/g;
+  const result = numbersRegex.test(password) ? 10 : 0;
+  return result;
+};
+const hasScpecialC = (password) => {
+  const specialCharsRegex = /[^a-zA-Z0-9]+/g;
+  const result = specialCharsRegex.test(password) ? 15 : 0;
+  return result;
 };
 
 const copy = () => {
